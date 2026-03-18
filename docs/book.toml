@@ -1,0 +1,6 @@
+[book]
+title = "Fejix Documentation"
+src = "."
+
+[build]
+build-dir = "build"

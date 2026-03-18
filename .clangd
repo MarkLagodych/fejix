@@ -1,0 +1,58 @@
+If:
+    PathMatch: .*\.[ch]
+
+CompileFlags:
+    Add:
+        - -xc
+        - -std=c99
+        - -Wall
+        - -Wextra
+        - -Wpedantic
+        - -Werror=vla
+
+Diagnostics:
+    Suppress: pp_including_mainfile_in_preamble
+
+    ClangTidy:
+        Add:
+            - bugprone-*
+            - readability-identifier-naming
+
+        Remove:
+            # Assigning an error in a condition is intentional error checking.
+            - bugprone-assignment-in-if-condition
+
+            - bugprone-easily-swappable-parameters
+
+            # - bugprone-sizeof-expression
+
+
+        CheckOptions:
+            readability-identifier-naming.TypedefCase: lower_case
+            readability-identifier-naming.StructCase: lower_case
+            readability-identifier-naming.UnionCase: lower_case
+            readability-identifier-naming.EnumCase: lower_case
+
+            readability-identifier-naming.FunctionCase: lower_case
+
+            readability-identifier-naming.VariableCase: lower_case
+            readability-identifier-naming.MemberCase: lower_case
+            readability-identifier-naming.ParameterCase: lower_case
+
+            readability-identifier-naming.MacroDefinitionCase: UPPER_CASE
+            readability-identifier-naming.EnumConstantCase: UPPER_CASE
+
+---
+
+If:
+    PathMatch: .*fejix/.*\.h
+
+Diagnostics:
+    ClangTidy:
+        CheckOptions:
+            readability-identifier-naming.TypedefPrefix: fj_
+            readability-identifier-naming.StructPrefix: fj_
+            readability-identifier-naming.UnionPrefix: fj_
+            readability-identifier-naming.EnumPrefix: fj_
+
+            readability-identifier-naming.FunctionPrefix: fj_

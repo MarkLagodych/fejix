@@ -1,0 +1,100 @@
+---
+# Config for clang-format v16+
+#
+# Put trailing commas (e.g. enum A { X, Y, Z, }) to split enum/list items
+# into separate lines:
+#     enum A {
+#         X,
+#         Y,
+#         Z,
+#     }
+#
+# If you encounter terrible formatting bugs, use:
+#     // clang-format off
+#     ...
+#     // clang-format on
+#
+# If you encounter non-terrible formatting issues, just leave them as is.
+# Automatic formatting is for saving time and not for creating masterpieces.
+
+Language: Cpp
+Standard: Latest
+
+BasedOnStyle: Chromium
+
+ColumnLimit: 80
+LineEnding: LF
+InsertNewlineAtEOF: true
+
+IndentWidth: 4
+IndentCaseLabels: false
+IndentPPDirectives: None
+
+AlignAfterOpenBracket: false
+AlignTrailingComments: false
+AlignEscapedNewlines: DontAlign
+AlignOperands: DontAlign
+
+SpaceAfterCStyleCast: true
+SpaceInEmptyBlock: true
+SpaceBeforeCpp11BracedList: true
+SpacesBeforeTrailingComments: 1
+Cpp11BracedListStyle: false
+
+MaxEmptyLinesToKeep: 2
+SeparateDefinitionBlocks: Leave
+KeepEmptyLinesAtTheStartOfBlocks: false
+
+ReflowComments: false
+
+BreakBeforeBraces: Allman
+BreakBeforeBinaryOperators: All
+BreakAfterAttributes: Always
+AlwaysBreakTemplateDeclarations: Yes
+AllowShortFunctionsOnASingleLine: None
+
+PenaltyBreakAssignment: 1000
+PenaltyReturnTypeOnItsOwnLine: 1000
+
+QualifierAlignment: Custom
+QualifierOrder: ['static', 'inline', 'type', 'const', 'volatile', 'restrict']
+PointerAlignment: Right
+SpaceAroundPointerQualifiers: After
+
+BinPackParameters: true
+BinPackArguments: true
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowAllArgumentsOnNextLine: false
+
+
+# ========================== PROJECT-SPECIFIC ================================
+
+AttributeMacros:
+    - __stdcall
+    - __cdecl
+    - WINAPI
+    - CALLBACK
+    - FJ_EXPORT
+
+IncludeBlocks: Regroup
+IncludeCategories:
+    # Implicit priority of 0 is reserved for the main ("quoted") header
+
+    # Interface headers
+    -   Regex: '^<fejix/'
+        Priority: 10
+
+    # Implementation headers
+    -   Regex: '^<src/.*/'
+        Priority: 20
+    -   Regex: '^<src/'
+        Priority: 30
+
+    # Standard headers
+    -   Regex: '^<(assert|complex|ctype|errno|fenv|float|inttypes|limits|locale|malloc|math|setjmp|signal|stdarg|stdbool|stddef|stdint|stdio|stdlib|string|tgmath|time|wchar|wctype).h>'
+        Priority: 90
+        CaseSensitive: true
+
+    # Platform-specific headers
+    -   Regex: '^.*'
+        Priority: 100
