@@ -1,5 +1,29 @@
+# Convention: all macros defined by CMake must be prefixed with "FJ_BUILD_"
+# and can only enable features, i.e. no "DISABLE_OPENGL" or "WINDOWS_VERSION";
+# use "ENABLE_OPENGL" and "WINDOWS_10_RS2" instead.
+
+
 cmake_minimum_required(VERSION 3.16)
+
 project(fejix VERSION 0.0.1)
+
+
+### Default feature detection
+
+
+set(FJ_WINDOWS_API_BACKEND_DEFAULT OFF)
+set(FJ_COCOA_BACKEND_DEFAULT OFF)
+set(FJ_X11_BACKEND_DEFAULT OFF)
+set(FJ_WAYLAND_BACKEND_DEFAULT OFF)
+
+if(WIN32)
+    set(FJ_WINDOWS_API_BACKEND_DEFAULT ON)
+elseif(APPLE)
+    set(FJ_COCOA_BACKEND_DEFAULT ON)
+else()
+    set(FJ_X11_BACKEND_DEFAULT ON)
+    set(FJ_WAYLAND_BACKEND_DEFAULT ON)
+endif()
 
 
 ### Project features
@@ -7,14 +31,18 @@ project(fejix VERSION 0.0.1)
 
 set(FJ_TESTS OFF CACHE BOOL "Build Fejix tests")
 
-set(FJ_CPU_RENDERING OFF CACHE BOOL "Enable CPU rendering")
-set(FJ_OPENGL_RENDERING OFF CACHE BOOL "Enable OpenGL rendering")
-set(FJ_VULKAN_RENDERING OFF CACHE BOOL "Enable Vulkan rendering")
+set(FJ_CPU_RENDERING ON CACHE BOOL "Enable CPU rendering")
+set(FJ_OPENGL_RENDERING ON CACHE BOOL "Enable OpenGL rendering")
+set(FJ_VULKAN_RENDERING ON CACHE BOOL "Enable Vulkan rendering")
 
-set(FJ_X11_BACKEND OFF CACHE BOOL "Build X11 backend")
-set(FJ_WAYLAND_BACKEND OFF CACHE BOOL "Build Wayland backend")
-set(FJ_WINDOWS_API_BACKEND OFF CACHE BOOL "Build Windows API backend")
-set(FJ_COCOA_BACKEND OFF CACHE BOOL "Build Cocoa backend")
+set(FJ_X11_BACKEND ${FJ_X11_BACKEND_DEFAULT}
+    CACHE BOOL "Build X11 backend")
+set(FJ_WAYLAND_BACKEND ${FJ_WAYLAND_BACKEND_DEFAULT}
+    CACHE BOOL "Build Wayland backend")
+set(FJ_WINDOWS_API_BACKEND ${FJ_WINDOWS_API_BACKEND_DEFAULT}
+    CACHE BOOL "Build Windows API backend")
+set(FJ_COCOA_BACKEND ${FJ_COCOA_BACKEND_DEFAULT}
+    CACHE BOOL "Build Cocoa backend")
 
 
 ### CMake features
@@ -62,9 +90,13 @@ else()
         "-Wall" "-Wextra" "-Wpedantic" "-Werror=vla")
 endif()
 
+if (WIN32 AND BUILD_SHARED_LIBS)
+    target_compile_definitions(fejix PRIVATE "FJ_BUILD_WINDOWS_DLL")
+endif()
+
+# The root (".") directory is used to include <src/...> and <deps/...>
 target_include_directories(fejix
     PUBLIC "include"
-    # The root directory is used to include <src/...> and <deps/...>
     PRIVATE ".")
 
 target_sources(fejix PRIVATE

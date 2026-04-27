@@ -1,3 +1,5 @@
+# mdBook configuration
+
 [book]
 title = "Fejix Documentation"
 src = "."

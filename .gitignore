@@ -10,7 +10,7 @@ build*/
 # Cache directories
 __*/
 
-# Ignore all root files except the allowed ones
+# Ignore all root files except for the allowed ones
 /*.*
 !.gitignore
 !.gitkeep
