@@ -27,6 +27,16 @@ Implementation features:
 - lets you choose the backend to use at runtime
 - lets you query support for every feature of the host system at runtime
 
+<!--
+Design philosophy:
+
+- server-owned objects are always asynchronous (event-driven)
+  (including creation, destruction, and all other operations)
+- client-owned objects are always synchronous
+- simplicity, with many ways to extend
+- separation of input from output: input events are
+-->
+
 > This project is in its earliest stage of development.
 >
 > The most intereseting thing to see here is this emoji: 🌸

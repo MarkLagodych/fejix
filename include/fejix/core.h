@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+
 #ifndef FEJIX_EXPORT
 
 #if defined(FJ_BUILD_WINDOWS_DLL)
@@ -22,11 +23,13 @@
 
 #endif
 
-typedef uint32_t fj_object_type;
 
-struct fj_object
+typedef uint32_t fj_params_type;
+
+struct fj_params_base
 {
-    struct fj_object *next;
+    fj_params_type type;
+    struct fj_params *next;
 };
 
 #endif
